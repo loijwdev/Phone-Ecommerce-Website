@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Favicon  -->
+    <link rel="icon" href="/img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="/css/core-style.css">
+    <link rel="stylesheet" href="/style.css">
+
+</head>
+
+<body>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="/index"><img src="/img/TĐT_logo.png" alt=""></a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="/index">Trang chủ</a></li>
+
+                            <li><a href="/shop">Shop</a>
+                            
+                            </li>
+                            <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="/shop">Shop</a></li>
+                                    <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+
+            <!-- Header Meta Data -->
+            <div class="header-meta d-flex clearfix justify-content-end">
+                <!-- User Login Info -->
+                {{!-- {{#if name}} --}}
+                <div class="user-login-info" style="display: flex; justify-content: center; align-items: center;">
+                    <span style="margin-right:10px ;">Chào, {{name}}</span>
+                </div>
+                {{!-- {{else}}
+                <a href="#"><img src="/img/core-img/user.svg" alt="" style="margin: 35px;"></a>
+                {{/if}} --}}
+                <div class="user-login-info">
+                    <a href="/cus/logout" style="display: flex; justify-content: center; align-items: center;"><img
+                            src="/img/logout.png" alt=""></a>
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <div class="breadcumb_area bg-img" style="background-image: url(/img/bg-img/breadcumb.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="page-title text-center">
+                        <h2>Xử lý giao dịch</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <div class="col-6 mx-auto mb-2">
+            <div class="order-details-confirmation">
+
+                <div class="cart-page-heading">
+                    <h3 class="justify-content-center">ĐƠN HÀNG CỦA QUÝ KHÁCH {{msg}}</h3>
+                    <p>The Details</p>
+                </div>
+
+
+                {{#if order}}
+                <ul class="order-details-form mb-4">
+                    <li>
+                        Mã đơn hàng:
+                        <span id="orderId">{{order._id}}</span>
+                        <button type="button" class="btn btn-info" onclick="copyToClipboard()">Copy</button>
+                    </li>
+                    <li><span>Product</span><span>Qty</span><span>Price</span> <span>Total</span></li>
+                    {{#each order.products}}
+                        <li>
+                            <span style="width:30%">
+                                {{this.product_name}}
+                                
+                            </span>
+                            <span>{{this.quantity}}</span>
+                            <span> {{formatCurrency this.unit_price}}</span> 
+                            <span>{{formatCurrency this.total_price}}</span> 
+                            <span style="display: none;">{{this.product_id}}</span>
+                        </li>
+                    {{/each}}
+                    <li style="justify-content: center; font-size:large">Total: <span id="total-amount">
+                            {{formatCurrency order.total_amount}}</span> </li>
+                    <li>Thông tin người nhận: {{receiverInfo}}</li>
+
+                    <li>Phương thức thanh toán: {{order.payment_method}}</li>
+                    <li>Ngày và giờ đặt hàng: {{formatDate order.created}}</li>
+                </ul>
+                {{else}}
+                <ul class="order-details-form mb-4">
+                    <li>Mã đơn hàng:</li>
+                    <li>
+                        <h2>Không tìm thấy đơn hàng</h2>
+                    </li>
+                </ul>
+                {{/if}}
+
+            </div>
+        </div>
+    </div>
+    <!-- ##### Checkout Area End ##### -->
+
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area d-flex mb-30">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="#"><img src="/img/TĐT_logo.png" alt=""></a>
+                        </div>
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <ul>
+                                <li><a href="shop.html">Shop</a></li>
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area mb-30">
+                        <ul class="footer_widget_menu">
+                            <li><a href="#">Order Status</a></li>
+                            <li><a href="#">Payment Options</a></li>
+                            <li><a href="#">Shipping and Delivery</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_heading mb-30">
+                            <h6>Subscribe</h6>
+                        </div>
+                        <div class="subscribtion_form">
+                            <form action="#" method="post">
+                                <input type="email" name="mail" class="mail" placeholder="Your email here">
+                                <button type="submit" class="submit"><i class="fa fa-long-arrow-right"
+                                        aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_social_area">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i
+                                    class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i
+                                    class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i
+                                    class="fa fa-twitter" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><i
+                                    class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Youtube"><i
+                                    class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i
+                            class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib</a>, distributed by <a href="https://themewagon.com/"
+                            target="_blank">ThemeWagon</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="/js2/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="/js2/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="/js2/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="/js2/plugins.js"></script>
+    <!-- Classy Nav js -->
+    <script src="/js2/classy-nav.min.js"></script>
+    <!-- Active js -->
+    <script src="/js2/active.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- jQuery Easing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        function copyToClipboard() {
+            var orderId = document.getElementById('orderId').innerText;
+            var tempInput = document.createElement('input');
+            tempInput.style = 'position: absolute; left: -1000px; top: -1000px';
+            tempInput.value = orderId;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+        }
+    </script>
+</body>
+
+</html>

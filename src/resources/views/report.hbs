@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+</head>
+<style>
+
+        .highcharts-credits {
+            display: none;
+        }
+    </style>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+                    <div class="col">
+                        <h2 style="font-size: 35px;"> <a href="" style="text-decoration: none; color: inherit;">Thống kê
+                            </a>
+                        </h2>
+                    </div>
+                </div>
+
+                <form action="/report/reportDetail" method="post" class="needs-validation" novalidate>
+                    <div class="row justify-content-between mt-3">
+                        <div class="col-2">
+                            <select class="form-select" id="select" name="select">
+                                <option>Doanh thu</option>
+                                <option value="today">Ngày hôm nay</option>
+                                <option value="yesterday">Ngày hôm qua</option>
+                                <option value="week">Tuần này</option>
+                                <option value="month">Tháng này</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-7 col-lg-8">
+                            <input style="height:30px; font-size: 15px;" type="date" name="input" id="input"
+                                value={{input}}>
+                            <input style="height:30px; font-size: 15px;" type="date" name="output" id="output"
+                                value={{output}}>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-dark">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row justify-content-between mt-3">
+                    <div class="col-lg-4 col-md-12">
+                        <div class="row justify-content-between mt-3">
+                            <div class="col text-center">
+                                <div class="chart-box">
+                                    <div class="chart-logo">
+                                        <span class="fi-rr-user"></span>
+                                    </div>
+                                    <div>
+                                        <h1> {{count_customer}} </h1>
+                                        <h5>Khách hàng</h5>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col text-center">
+                                <div class="chart-box">
+                                    <div class="chart-logo">
+                                        <span class="fi-rr-shopping-cart"></span>
+                                    </div>
+                                    <div>
+                                        <h1> {{count_order}} </h1>
+                                        <h5>Đơn hàng</h5>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between mt-3">
+                            <div class="col text-center">
+                                <div class="chart-box">
+                                    <div class="chart-logo">
+                                        <span class="fi-rr-box"></span>
+                                    </div>
+                                    <div>
+                                        <h1>{{count_product}}</h1>
+                                        <h5>Sản phẩm</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col text-center">
+                                <div class="chart-box">
+                                    <div class="chart-logo">
+                                        <span class="fi-rr-chat-arrow-grow"></span>
+                                    </div>
+                                    <div>
+                                        <h1>{{total_money}}</h1>
+                                        <h5>Doanh thu</h5>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col">
+                        <figure class="highcharts-figure" style="margin-top: 15px; ">
+                            <div id="container" class="height: 150px"></div>
+                        </figure>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between mt-3">
+                    <figure class="highcharts-figure" style="margin-top: 15px;">
+                        <div id="container1"></div>
+                    </figure>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+<script src="/js/report.js"></script>

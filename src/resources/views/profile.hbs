@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{> sidebar}}
+            </div>
+            <div class="col-10">
+                <div id="right" class="right">
+                            {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+                    <div class="col">
+                        <h2 style="font-size: 35px;">Profile</h2>
+                    </div>
+                </div>               
+                <div class="container-xl px-4 mt-4" method="post" action="/profile">
+                    <hr class="mt-0 mb-4">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="card mb-4 mb-x-0">
+                                <div class="card-header">Avatar</div>
+                                <div class="card-body text-center">
+                                    <img class="img-account-profile rounded-circle mb-1" src="/uploads/{{avt}}" alt="">
+                                    <div class="small font-italic text-muted mb-5">JPG or PNG no larger than 5 MB</div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="col-xl-8">
+                                <div class="card mb-4">
+                                    <div class="card-header">Thông Tin Tài Khoản</div>
+                                    <div class="card-body">
+                                    <table class="table" style="font-size: 15px;">
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputUsername"><b>Tên Đăng Nhập</b> </label></td>
+                                        <td> {{name}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputFirstName"><b>Tên</b></label></td>
+                                        <td>{{firstname}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputLastName"><b>Họ</b></label></td>
+                                        <td> {{lastname}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputEmailAddress"><b>Email</b></label></td>
+                                        <td> {{email}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputPhone"><b>Số Điện Thoại</b></label></td>
+                                        <td> {{phone}}</td>
+                                        </tr>
+                                        <tr>
+                                        <td><label class="small mb-1" for="inputBirthday"><b>Ngày Sinh</b></label></td>
+                                        <td>{{birthday}}</td>
+                                        </tr>
+                                    </table>
+                                        <button class="btn btn-primary" type="button">
+                                        <a href="/profile/edit/{{this._id}}" style="text-decoration: none;" class="update btn btn-sm btn-primary mx-1" value="Sửa">
+                                        <i class="fas fa-edit"></i>
+                                        </a>                                
+                                        </button>
+                                    </div>
+                                </div>                                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+</html>
+
+<script>
+    var messageExists = document.querySelector('.alert.alert-dismissible.fade.show') !== null;
+    if (messageExists) {
+        var messageElement = document.querySelector('.alert.alert-dismissible.fade.show');
+        setTimeout(function () {
+            messageElement.style.display = 'none';
+        }, 3000);
+    }
+
+
+</script>

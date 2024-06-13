@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+                    <div class="col">
+                        <h2 style="font-size: 35px;">Sản phẩm</h2>
+                    </div>
+                    {{#ifRoleIsAdmin role}}
+                    <div class="col-auto">
+                        <button class="btn btn-primary btnAdd float-left" style="width: auto;">
+                            <span class="fi-rr-plus"></span>
+                            <a class="item add-product" style="color: white;" href="/product/addProduct">Thêm sản
+                                phẩm</a>
+                        </button>
+                    </div>
+                      {{/ifRoleIsAdmin}}  
+
+                </div>
+
+
+                <div class="table-responsive">
+                    <!-- Add a search form -->
+                    <form action="/product" method="GET" class="mb-3" style="width:30%; float:right">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search products" name="search"
+                                value="{{search}}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                    {{#if message }}
+                    <div class="alert alert-dismissible fade show alert-{{message.type}} fixed-bottom" role="alert"
+                        style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong style="margin-top: 10px;font-size:15px;"> {{message.message}} </strong>
+                    </div>
+                    {{/if}}
+                    {{#if products.length}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã vạch</th>
+                                <th>Ảnh</th>
+                                <th>Tên sản phẩm</th>
+                                <th>Loại</th>
+                                <th>Thương hiệu</th>
+                                <th>Ngày tạo</th>
+                                {{#ifRoleIsAdmin role}}
+                                <th>Action</th>
+                                {{/ifRoleIsAdmin}}
+                            </tr>
+                        </thead>
+                        {{#each products }}
+                        <tbody>
+                            <tr>
+                                <th class="align-middle">{{incrementedIndex @index}}</th>
+                                <th class="align-middle">
+                                    <div class="barcode-container"
+                                        style="text-align: center; display: flex; flex-direction: column; align-items: center;">
+                                        <img src="data:image/png;base64,{{this.barcode}}" alt="" class="img-thumbnail"
+                                            style="width: 100px;">
+                                        <div class="upc-number" style="margin-top: 5px;">{{this.barcodeUPC}}</div>
+                                    </div>
+                                </th>
+                                <th class="align-middle"><img src="/uploads/{{this.image}}" alt="" class="img-thumbnail"
+                                        style="width:80px"></th>
+                                <th class="align-middle">{{this.name}}</th>
+                                <th class="align-middle">{{this.category}}</th>
+                                <th class="align-middle">{{this.brand}}</th>
+                                <td class="align-middle">{{this.created}} </td>
+                                {{#ifRoleIsAdmin role}}
+                                <td class="align-middle">
+                                    <a href="/product/edit/{{this._id}}" style="text-decoration: none;"
+                                        class="update btn btn-sm btn-primary mx-1">
+                                        Chi tiết
+                                    </a>
+                                    <a href="/product/delete/{{this._id}}" style="text-decoration: none;"
+                                        class="delete btn btn-sm btn-danger mx-1 mt-1">
+                                        Xóa
+                                    </a>
+                                </td>
+                                {{/ifRoleIsAdmin}}
+                            </tr>
+                        </tbody>
+                        {{/each}}
+                    </table>
+                    {{else}}
+                    <h1 class="text-center text-secondary mt-5">Không có sản phẩm</h1>
+                    {{/if}}
+                    <!-- Add pagination links -->
+                    <div class="d-flex justify-content-center">
+                        <ul class="pagination">
+                            {{#if pagination.prevPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/product?page={{pagination.prevPage}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    Previous
+                                </a>
+                            </li>
+                            {{/if}}
+
+                            {{#each pagination.pages}}
+                            <li class="page-item {{#if this.isCurrent}}active{{/if}}">
+                                <a class="page-link"
+                                    href="/product?page={{this.page}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    {{this.page}}
+                                </a>
+                            </li>
+                            {{/each}}
+
+                            {{#if pagination.nextPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/product?page={{pagination.nextPage}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    Next
+                                </a>
+                            </li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    var messageExists = document.querySelector('.alert.alert-dismissible.fade.show') !== null;
+    if (messageExists) {
+        var messageElement = document.querySelector('.alert.alert-dismissible.fade.show');
+        setTimeout(function () {
+            messageElement.style.display = 'none';
+        }, 5000);
+    }
+
+
+</script>

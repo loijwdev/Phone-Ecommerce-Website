@@ -1,0 +1,82 @@
+<aside id="sidebar">
+    <div class="top">
+        <a href="/">
+            <div class="logo">
+                <img src="/images/logoWeb.png" alt="" />
+                {{! <h2>Moblie <span class="danger"> &Accessories</span></h2> }}
+            </div>
+        </a>
+        <div class="close" id="close-btn">
+            <span class="fi-rr-cross"></span>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <a href="/" class="list">
+            <span class="fi-rr-apps"></span>
+            <h3>{{i18n 'Home'}} </h3>
+        </a>
+        <a href="/pos" class="list">
+            <span class="fi-rr-boxes"></span>
+            <h3>{{i18n 'POS'}}</h3>
+        </a>
+
+        <a href="/order" class="list">
+            <span class="fi fi-rr-file-invoice-dollar"></span>
+            <h3>{{i18n 'Orders'}}</h3>
+        </a>
+        <a href="/product" class="list">
+            <span class="fi-rr-shopping-cart"></span>
+            <h3>{{i18n 'Product List'}}</h3>
+        </a>
+        <a href="/category" class="list">
+            <span class=" fi-rr-apps"></span>
+            <h3>Loại sản phẩm</h3>
+        </a>
+        <a href="/report" class="list">
+            <span class="fi-rr-chat-arrow-grow"></span>
+            <h3>{{i18n 'Reports'}}</h3>
+        </a>
+        {{#ifRoleIsAdmin role}}
+        <a href="/staff" class="list">
+            <span class="fi-rr-comment-alt"></span>
+            <h3>{{i18n 'Staff'}}</h3>
+        </a>
+        {{/ifRoleIsAdmin}}
+        <a href="/customer" class="list">
+            <span class="fi-rr-user"></span>
+            <h3>{{i18n 'Customer'}}</h3>
+        </a>
+        <a href="#" class="list">
+            <span class="fi-rr-comment-info"></span>
+            <h3>{{i18n 'Notification'}}</h3>
+        </a>
+        <a href="#" class="list">
+            <span class="fi-rr-settings"></span>
+            <h3>{{i18n 'Setting'}}</h3>
+        </a>
+        <a href="/logout">
+            <span class="fi-rr-exit"></span>
+            <h3>{{i18n 'Logout'}}</h3>
+        </a>
+    </div>
+</aside>
+
+<script>
+    const contentItems = document.querySelectorAll('.list');
+    contentItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault(); contentItems.forEach(item => {
+                item.classList.remove('active');
+            }); item.classList.add('active'); const href
+                = item.getAttribute('href'); sessionStorage.setItem('activeTab', href);
+            window.location.href = href;
+        });
+    }); const activeTab =
+        sessionStorage.getItem('activeTab'); if (activeTab) {
+            const activeItem =
+                document.querySelector(`.list[href="${activeTab}"]`); if (activeItem) {
+                    activeItem.classList.add('active');
+                }
+        }
+</script>

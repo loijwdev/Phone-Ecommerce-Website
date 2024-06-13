@@ -1,0 +1,245 @@
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-2 p-0">
+            <!-- Sidebar content here -->
+            {{>sidebar}}
+        </div>
+        <div class="col-10">
+            <div id="right" class="right">
+                {{>info}}
+            </div>
+            {{#if message }}
+            <div class="alert alert-dismissible fade show alert-{{message.type}} fixed-bottom" role="alert"
+                style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong style="margin-top: 10px;font-size:15px;"> {{message.message}} </strong>
+            </div>
+            {{/if}}
+            <div class="col-6 mx-auto " style="margin-top: 30px ;width: 50%;">
+                <h1 class="">Thêm sản phẩm</h1>
+                <form action="/product/addProduct" method="post" enctype="multipart/form-data" class="needs-validation"
+                    novalidate>
+                    <div class="form-group">
+                        <label for="barcode">Mã vạch:</label>
+                        <input class="form-control" placeholder="Nhập mã vạch" id="barcode" name="barcode">
+                    </div>
+                    <div class="form-group">
+                        <label for="imgPd">Ảnh sản phẩm</label>
+                        <input class="form-control" type="file" id="imgPd" name="imgPd">
+                    </div>
+                    <div class="form-group">
+                        <label for="video_url">Video sản phẩm</label>
+                        <input class="form-control" placeholder="URL Video" id="video_url" name="video_url">
+                    </div>
+                    <div class="form-group">
+                        <label for="namePd">Tên sản phẩm</label>
+                        <input class="form-control" placeholder="Nhập tên sản phẩm" id="namePd" name="namePd">
+                    </div>
+                    <div class="form-group">
+                        <label for="brand">Thương hiệu</label>
+                        <input class="form-control" placeholder="Nhập thương hiệu" id="brand" name="brand">
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Loại</label>
+                        <select class="form-select select_cat" id="category" required="" name="product_category">
+                            {{#each categories}}
+                            <option value="{{this.name}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Đặc điểm</label>
+                        <textarea class="form-control" id="description" name="description" cols="10"
+                            rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group mt-2">
+                        <label for="capacities">Capacities:</label>
+                        <div id="capacities">
+                            <div class="capacity mt-1">
+                                <input class="form-control mb-2 mt-2" placeholder="Nhập dung lượng"
+                                    name="capacities[0][capacity]">
+                                <div class="row">
+                                    <div class="col-3">
+                                        <input class="form-control mb-2" placeholder="Nhập màu sắc"
+                                            name="capacities[0][colors][0][color]">
+                                        <input class="form-control mb-2" placeholder="Nhập giá"
+                                            name="capacities[0][colors][0][price]">
+                                        <input class="form-control mb-2" placeholder="Nhập số lượng trong kho"
+                                            name="capacities[0][colors][0][quantityInStock]">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control mb-2" placeholder="Nhập màu sắc"
+                                            name="capacities[0][colors][1][color]">
+                                        <input class="form-control mb-2" placeholder="Nhập giá"
+                                            name="capacities[0][colors][1][price]">
+                                        <input class="form-control mb-2" placeholder="Nhập số lượng trong kho"
+                                            name="capacities[0][colors][1][quantityInStock]">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control mb-2" placeholder="Nhập màu sắc"
+                                            name="capacities[0][colors][2][color]">
+                                        <input class="form-control mb-2" placeholder="Nhập giá"
+                                            name="capacities[0][colors][2][price]">
+                                        <input class="form-control mb-2" placeholder="Nhập số lượng trong kho"
+                                            name="capacities[0][colors][2][quantityInStock]">
+                                    </div>
+                                    <div class="col-3">
+                                        <input class="form-control mb-2" placeholder="Nhập màu sắc"
+                                            name="capacities[0][colors][3][color]">
+                                        <input class="form-control mb-2" placeholder="Nhập giá"
+                                            name="capacities[0][colors][3][price]">
+                                        <input class="form-control mb-2" placeholder="Nhập số lượng trong kho"
+                                            name="capacities[0][colors][3][quantityInStock]">
+                                    </div>
+                                    
+                                </div>
+                            <button type="button" class="btn btn-danger removeCapacity mt-2 mb-2">Xóa dung
+                                        lượng</button>
+
+                                    <button type="button" class="btn btn-primary addColor mt-2 mb-2" id="addColor">Thêm màu sắc</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <button type="button" id="addCapacity" class="btn btn-secondary mt-2 ">Thêm
+                                    dung lượng</button>
+                            </div>
+                            {{!-- <div class="col-4">
+                                <button type="button" id="addColor" class="btn btn-secondary ">Thêm
+                                    màu
+                                    sắc</button>
+                            </div> --}}
+
+                        </div>
+
+                    </div>
+
+
+                    <button type="submit" name="submit" class="btn btn-primary " style="margin-top: 15px;">Thêm sản
+                        phẩm</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        var capacityIndex = 0; // Đặt chỉ số dung lượng ban đầu
+        var colorIndex = 3; // Đặt chỉ số màu sắc ban đầu
+
+        $('#addCapacity').click(function () {
+            capacityIndex++; // Tăng chỉ số dung lượng lên mỗi khi nhấn nút
+            colorIndex = 3;
+            // Tạo một chuỗi HTML cho cột input mới
+            var newCapacityDiv = `
+        <div class="capacity">
+            <input class="form-control mb-2" placeholder="Nhập dung lượng" name="capacities[${capacityIndex}][capacity]">
+            <div class="row">
+                <div class="col-3">
+                    <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][0][color]">
+                    <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][0][price]">
+                    <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][0][quantityInStock]">
+                </div>
+                <div class="col-3">
+                    <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][1][color]">
+                    <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][1][price]">
+                    <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][1][quantityInStock]">
+                </div>
+                <div class="col-3">
+                    <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][2][color]">
+                    <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][2][price]">
+                    <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][2][quantityInStock]">
+                </div>
+                <div class="col-3">
+                    <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][3][color]">
+                    <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][3][price]">
+                    <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][3][quantityInStock]">
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger removeCapacity mt-2">Xóa dung lượng</button>
+            <button type="button" class="btn btn-primary addColor mt-2">Thêm màu sắc</button>
+        </div>
+        `;
+
+            // Thêm div mới vào cuối container
+            $('#capacities').append(newCapacityDiv);
+
+            $('.addColor').last().on('click', function () {
+                colorIndex++; // Tăng chỉ số màu sắc lên mỗi khi nhấn nút
+
+                // Tạo một chuỗi HTML cho cột input mới
+                var newColorColumn = `
+            <div class="col-3">
+                <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][${colorIndex}][color]">
+                <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][${colorIndex}][price]">
+                <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][${colorIndex}][quantityInStock]">
+                <button type="button" class="btn btn-danger removeColor mb-2 mt-1">Xóa</button>
+            </div>
+            `;
+
+                // Thêm cột input mới vào cuối hàng của phần dung lượng này
+                $(this).parent().find('.row').append(newColorColumn);
+
+                // Thêm sự kiện click cho nút xóa màu sắc cuối cùng được thêm vào
+                $('.removeColor').last().on('click', function () {
+                    $(this).parent().remove();
+                });
+            });
+        });
+
+        // Thêm sự kiện click cho nút xóa dung lượng
+        $('.container').on('click', '.removeCapacity', function () {
+            $(this).parent().remove();
+        });
+
+
+        $('#addColor').click(function () {
+            colorIndex++; // Tăng chỉ số màu sắc lên mỗi khi nhấn nút
+
+            // Tạo một chuỗi HTML cho cột input mới
+            var newColorColumn = `
+        <div class="col-3">
+            <input class="form-control mb-2" placeholder="Nhập màu sắc" name="capacities[${capacityIndex}][colors][${colorIndex}][color]">
+            <input class="form-control mb-2" placeholder="Nhập giá" name="capacities[${capacityIndex}][colors][${colorIndex}][price]">
+            <input class="form-control mb-2" placeholder="Nhập số lượng trong kho" name="capacities[${capacityIndex}][colors][${colorIndex}][quantityInStock]">
+            <button type="button" class="btn btn-danger removeColor mb-2 mt-1">Xóa</button>
+        </div>
+        `;
+
+            // Thêm cột input mới vào cuối hàng của phần dung lượng cuối cùng được thêm vào
+            $('.capacity').last().find('.row').append(newColorColumn);
+
+            // Thêm sự kiện click cho nút xóa màu sắc cuối cùng được thêm vào
+            $('.removeColor').last().on('click', function () {
+                $(this).parent().remove();
+            });
+        });
+    });
+
+
+
+
+    document.getElementById('capacities').addEventListener('click', function (event) {
+        if (event.target.classList.contains('removeCapacity')) {
+            event.target.parentElement.remove();
+        }
+    });
+
+
+    var messageExists = document.querySelector('.alert.alert-dismissible.fade.show') !== null;
+    if (messageExists) {
+        var messageElement = document.querySelector('.alert.alert-dismissible.fade.show');
+        setTimeout(function () {
+            messageElement.style.display = 'none';
+        }, 5000);
+    }
+
+
+</script>

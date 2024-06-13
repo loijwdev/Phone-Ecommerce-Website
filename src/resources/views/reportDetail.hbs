@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        $(document).ready(function () {
+            $('.detail-toggle').click(function () {
+                const targetId = $(this).data('target');
+                $(targetId).collapse('toggle');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+
+                    <div class="col">
+                        <h2 style="font-size: 35px;"> <a href="./" style="text-decoration: none; color: inherit;">Doanh
+                                thu</a>
+
+                    </div>
+                </div>
+
+                <form action="/report/reportDetail" method="post" class="needs-validation" novalidate>
+                    <div class="row justify-content-between mt-3">
+                        <div class="col-2">
+                            <select class="form-select" id="select" name="select">
+                                <option>Doanh thu</option>
+                                <option value="today">Ngày hôm nay</option>
+                                <option value="yesterday">Ngày hôm qua</option>
+                                <option value="week">Tuần này</option>
+                                <option value="month">Tháng này</option>
+                            </select>
+                            <br>
+                            <select class="form-select" id="order_type" name="order_type">
+                                <option value="all">Tất cả</option>
+                                <option value="web">Web</option>
+                                <option value="pos">POS</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-7 col-lg-8">
+                            <input style="height:30px; font-size: 15px;" type="date" name="input" id="input"
+                                value={{input}}>
+                            <input style="height:30px; font-size: 15px;" type="date" name="output" id="output"
+                                value={{output}}>
+                        </div>
+                        <div class="col">
+                            <button type="submit" class="btn btn-dark">Search</button>
+                        </div>
+                    </div>
+                </form>
+                <br>
+
+
+
+                <div class="table-responsive">
+                    {{#if message }}
+                    <div class="alert alert-dismissible fade show alert-{{message.type}}" role="alert">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong style="margin-top: 10px;"> {{message.message}} </strong>
+                    </div>
+                    {{/if}}
+                    {{#if order}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>Ngày</th>
+                                <th>Số lượng đơn</th>
+                                <th>Số lượng sản phẩm</th>
+                                <th>Doang thu</th>
+                                <th>Đơn hàng tại</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each order}}
+                            <tr>
+                                <th class="align-middle"> {{this.created}}</th>
+                                <th class="align-middle"> {{this.sumOrderInday}} </th>
+                                <th class="align-middle"> {{this.sumProductInDay}} </th>
+                                <th class="align-middle"> {{this.sumMoneyInday}} </th>
+                                <td class="align-middle"> {{this.order_type}} </td>
+                                <td>
+                                    <a class="btn btn-info detail-toggle" data-bs-toggle="collapse"
+                                        data-target="#collapse{{this.countId}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <td colspan="5">
+                                <div class="collapse" id="collapse{{this.countId}}">
+                                    <table style="width: 100%;">
+                                        {{#each this.detailOrderInDay}}
+
+                                        <thead>
+                                            <th colspan="6">Mã đơn: {{this.idInday}} </th>
+                                        </thead>
+                                        <thead>
+                                            <tr style="background-color: rgb(106, 233, 112)">
+
+                                                <th>Tên sản phẩm</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá bán 1 sản phẩm</th>
+
+                                                <th>Tổng tiền</th>
+                                            </tr>
+                                            {{#each this.detailOfIdInDay}}
+                                            <tr>
+
+                                                <td> {{this.name}} </td>
+                                                <td> {{this.quantity}} </td>
+                                                <td> {{this.unit_price}} </td>
+
+                                                <td> {{this.total_price}} </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </thead>
+
+                                        {{/each}}
+
+                                    </table>
+                                </div>
+                            </td>
+                            {{/each}}
+                        </tbody>
+                        {{#each total}}
+                        <thead>
+                            <th style="background-color: rgb(106, 233, 233); font-size:15px">Total:</th>
+                            <th style="background-color: rgb(106, 233, 233); font-size:15px"> {{this.totalOrder}} </th>
+                            <th style="background-color: rgb(106, 233, 233); font-size:15px"> {{this.totalProduct}}
+                            </th>
+                            <th style="background-color: rgb(106, 233, 233); font-size:15px" ; colspan="2">
+                                {{this.totalMoney}} </th>
+                        </thead>
+                        {{/each}}
+                    </table>
+                    {{else}}
+                    <h1 class="text-center text-secondary mt-5">Không tìm thấy</h1>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

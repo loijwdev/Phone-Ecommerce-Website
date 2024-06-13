@@ -1,0 +1,57 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="/css/signUp.css" />
+</head>
+
+<body>
+  <div id="preloader">
+    <div class="lds-ripple">
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <div class="container">
+      <div class="heading">
+        <a class="navbar-brand" href="/login">
+          <img class="mx-2" src="/images/logoWeb.png" />
+        </a>
+        <h2>Link đăng nhập</h2>
+      </div>
+      <form id="login-form" class="input-container" method="post" action="/requireLink">
+        <div class="inputbox">
+          <input type="email" name="email" id="email" required autocomplete="off" />
+          <span>Email nhân viên yêu cầu nhận mã</span>
+        </div>
+        <div class="btnbox" style="justify-content: center">
+          <button class="submit">
+            <i class="uil uil-navigator"></i>
+            <span class="btnText">Gửi</span>
+          </button>
+        </div>
+        <div class="modal-footer" style="font-size: 15px; font-weight: bold; justify-content: center;">
+          <a href="/" style="color: brown;">Trang chủ</a>
+          <a href="/signup" style="color: brown;">Đăng kí</a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  {{#if SignUpMessage }}
+  <div class="alert alert-dismissible fade show alert-{{SignUpMessage.type}} fixed-bottom" role="alert"
+    style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+    <strong style="margin-top: 10px;font-size:15px;"> {{SignUpMessage.message}} </strong>
+  </div>
+  {{/if}}
+
+</body>
+
+</html>
+

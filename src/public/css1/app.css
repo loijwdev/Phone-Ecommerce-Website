@@ -1,0 +1,12 @@
+.chart-box {
+    background-color: rgb(255, 252, 252);
+    width: 100%;
+    height: auto;
+    border-radius: 7px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.chart-logo span {
+    font-size: 37px;
+}

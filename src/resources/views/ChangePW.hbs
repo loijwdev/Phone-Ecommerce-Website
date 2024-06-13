@@ -1,0 +1,70 @@
+
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css1/signUp.css" />
+  </head>
+
+  <body>
+    <div id="preloader">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="container">
+        <div class="heading">
+          <a class="navbar-brand" href="/login">
+            <img class="mx-2" src="/images/logoWeb.png" />
+          </a>
+          <h2>Đổi mật khẩu</h2>
+        </div>
+        <form id="login-form" class="input-container" method="post" action="/ChangePW">
+          <div class="password-con">
+            <div class="inputbox">
+              <input
+                type="password"
+                name="newPassword"
+                id="newPassword"
+                required
+                autocomplete="off"
+              />
+              <span>Mật khẩu mới</span>
+            </div>
+            <span class="material-icons" id="3">visibility_off</span>
+          </div>
+          <div class="password-con">
+            <div class="inputbox">
+              <input
+                type="password"
+                name="confirmPassword"
+                id="confirmPassword"
+                required
+                autocomplete="off"
+              />
+              <span>Xác nhận mật khẩu</span>
+            </div>
+            <span class="material-icons" id="3">visibility_off</span>
+          </div>
+          <div class="btnbox" style="justify-content: center">
+            <button class="submit">
+              <i class="uil uil-navigator"></i>
+              <span class="btnText">Đổi mật khẩu</span>
+            </button>
+          </div>
+          <div>
+            <a href="/logout" style="color: brown;">Đăng xuất</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+
+  </body>
+
+</html>

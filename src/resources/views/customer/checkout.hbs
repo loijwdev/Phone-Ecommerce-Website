@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Favicon  -->
+    <link rel="icon" href="/img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="/css/core-style.css">
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        /* Default icon */
+        .fa.fa-circle-o:before {
+
+            content: "\f111";
+            /* Unicode for circle-o icon */
+        }
+
+        /* Icon when the accordion item is expanded */
+        .collapsed .fa.fa-circle-o:before {
+            content: "\f10c";
+            /* Unicode for check-circle-o icon */
+        }
+
+        .nice-select {
+            display: none;
+        }
+
+        select {
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="/index"><img src="/img/TĐT_logo.png" alt=""></a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="/index">Trang chủ</a></li>
+                            <li><a href="/shop">Shop</a>
+
+                            </li>
+                            <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="/shop">Shop</a></li>
+                                    <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+
+            <!-- Header Meta Data -->
+            <div class="user-login-info" style="display: flex; justify-content: center; align-items: center;">
+                {{#if name}}
+                <span style="margin-right:10px ;">Chào, <b>{{name}}</b></span>
+                {{else}}
+                <a href="/cus/auth" style="display: flex; justify-content: center; align-items: center;"><img src="img/core-img/user.svg" alt=""></a>
+                {{/if}}
+            </div>
+
+            <div class="user-login-info">
+                {{#if name}}
+                <a href="/cus/logout" style="display: flex; justify-content: center; align-items: center;"><img
+                        src="/img/logout.png" alt="" style="margin: 35px;"></a>
+                {{/if}}
+            </div>
+
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="page-title text-center">
+                        <h2>Checkout</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Checkout Area Start ##### -->
+    <div class="checkout_area section-padding-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-5">
+                    <div class="checkout_details_area clearfix">
+                        <div>
+                            <p>Các địa chỉ của bạn</p>
+                            <select class="form-control" id="shippingInfo" name="shippingInfo">
+                                <option value="">Chọn đỉa chỉ giao hàng</option>
+                                {{#each shippingInfo}}
+                                <option value="{{this._id}}">{{this.fullname}}, {{this.phone}}, {{this.address}}
+                                </option>
+                                {{/each}}
+                            </select>
+                            <button id="btn-add-address" class="btn btn-primary mt-4">Thêm địa chỉ giao hàng
+                                mới</button>
+                        </div>
+
+
+                        <form action="" method="post" style="display: none;">
+                            <div class="cart-page-heading mb-30">
+                                <h5>Billing Address</h5>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <p>Liên hệ</p>
+                                    <label for="fullname">Họ và tên</label>
+                                    <input type="text" class="form-control" id="fullname" name="fullname" value="">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="phone">Số điện thoại</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="">
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <p>Địa chỉ</p>
+                                    <label for="province">Tỉnh, Thành phố <span>*</span></label>
+                                    <select id="province" class="w-100">
+                                        <option value="">Chọn tỉnh, thành phố</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="district">Quận, Huyện <span>*</span></label>
+                                    <select id="district" class="w-100">
+                                        <option value="">Chọn quận, huyện</option>
+                                    </select>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="ward">Phường, xã<span>*</span></label>
+                                    <select name="" id="ward">
+                                        <option value="">Chọn phường, xã</option>
+                                    </select>
+
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <label for="road">Tên đường, Tòa nhà, Số nhà <span>*</span></label>
+                                    <input type="text" class="form-control" id="road" value="">
+                                </div>
+                                {{!-- <div class="col-12 mb-3">
+                                    <label for="note">Ghi chú</label>
+                                    <textarea name="note" id="note" class="form-control"></textarea>
+                                </div> --}}
+                                <button type="submit" class="btn essence-btn">Lưu thông tin</button>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+                <div class="col-7">
+                    <div class="order-details-confirmation">
+
+                        <div class="cart-page-heading">
+                            <h5>Your Order</h5>
+                            <p>The Details</p>
+                        </div>
+
+                        <ul class="order-details-form mb-4">
+                            <li><span>Product</span><span>Qty</span><span>Price</span><span>Total</span></li>
+                            {{#each carts}}
+                            <li><span style="width:45%">{{this.productName}} - {{this.capacity}} - {{this.color}}</span> <span>{{this.quantity}}</span>
+                                <span>{{this.unitPrice}}</span><span>{{this.price}}</span>
+                                <span style="display: none;">{{this.id}}</span>
+                                <span style="display: none;">{{this.capacity}}</span>
+                                <span style="display: none;">{{this.color}}</span>
+                            </li>
+                            {{/each}}   
+                            <li><span>Phí vận chuyển: Miễn phí</span></li>
+                            <li style="justify-content: center; font-size:large">Tổng tiền: <span
+                                    id="total-amount" class="ml-2">{{totalAmount}}</span> </li>
+                        </ul>
+
+                        <div id="accordion" role="tablist" class="mb-4">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne">
+                                    <h6 class="mb-0">
+                                        <a data-payment-method="MoMo" style="color: #D82D8B;"
+                                            class="collapsed payment-method" data-toggle="collapse" href="#collapseOne"
+                                            aria-expanded="false" aria-controls="collapseOne"><i
+                                                class="fa fa-circle-o mr-3"></i>MoMo</a>
+                                    </h6>
+                                </div>
+
+                                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        <p>Thanh toán với MoMo</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingTwo">
+                                    <h6 class="mb-0">
+                                        <a data-payment-method="VNPAY" style="color: rgb(17, 67, 141);"
+                                            class="collapsed payment-method" data-toggle="collapse" href="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo"><i
+                                                class="fa fa-circle-o mr-3"></i>VNPAY</a>
+                                    </h6>
+                                </div>
+                                <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        <p>Thanh toán với VNPAY</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingThree">
+                                    <h6 class="mb-0">
+                                        <a data-payment-method="Cash" style="color: black;"
+                                            class="collapsed payment-method" data-toggle="collapse"
+                                            href="#collapseThree" aria-expanded="false" aria-controls="collapseThree"><i
+                                                class="fa fa-circle-o mr-3"></i>Tiền mặt</a>
+                                    </h6>
+                                </div>
+                                <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        <p>Thanh toán khi nhận hàng</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="btn essence-btn" id="btn-order">Place Order</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Checkout Area End ##### -->
+    <script id="kami-chat-widget" src="https://kamimind.ai/kami-chat-widget.js" token="rZq7YeQ4YK40O5WUcJlOH2D32kBuehpC"
+        charset="utf-8" botToken="336290a4-88b3-43e8-ac45-82ace2518135" defer></script>
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area d-flex mb-30">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="#"><img src="/img/TĐT_logo.png" alt=""></a>
+                        </div>
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <ul>
+                                <li><a href="shop.html">Shop</a></li>
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area mb-30">
+                        <ul class="footer_widget_menu">
+                            <li><a href="#">Order Status</a></li>
+                            <li><a href="#">Payment Options</a></li>
+                            <li><a href="#">Shipping and Delivery</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_heading mb-30">
+                            <h6>Subscribe</h6>
+                        </div>
+                        <div class="subscribtion_form">
+                            <form action="#" method="post">
+                                <input type="email" name="mail" class="mail" placeholder="Your email here">
+                                <button type="submit" class="submit"><i class="fa fa-long-arrow-right"
+                                        aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_social_area">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i
+                                    class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i
+                                    class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i
+                                    class="fa fa-twitter" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><i
+                                    class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Youtube"><i
+                                    class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i
+                            class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib</a>, distributed by <a href="https://themewagon.com/"
+                            target="_blank">ThemeWagon</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="/js2/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="/js2/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="/js2/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="/js2/plugins.js"></script>
+    <!-- Classy Nav js -->
+    <script src="/js2/classy-nav.min.js"></script>
+    <!-- Active js -->
+    <script src="/js2/active.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- jQuery Easing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+    <script>
+        jQuery('#btn-add-address').on('click', function () {
+            jQuery('form').css('display', 'block');
+        });
+
+        function showToast(msg) {
+            const toastHTML = `
+            <div class="alert alert-dismissible fade show alert-${msg.type} fixed-bottom" role="alert"
+                style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                <strong style="margin-top: 10px;font-size:15px;"> ${msg.message} </strong>
+            </div>
+            `;
+            document.body.insertAdjacentHTML('beforeend', toastHTML);
+
+            // Tự động ẩn toast sau 3 giây
+            setTimeout(function () {
+                jQuery('.alert').alert('close');
+            }, 3000);
+        }
+
+        window.onload = function () {
+            const selects = document.querySelectorAll('select');
+            selects.forEach(select => {
+                select.style.display = 'block'; // Or 'inline', 'inline-block', etc.
+            });
+        };
+        // Fetch và tạo tùy chọn cho tỉnh/thành phố
+        fetch('https://vapi.vnappmob.com/api/province/')
+            .then(response => response.json())
+            .then(data => {
+                const provinceSelect = document.getElementById('province');
+                data.results.forEach(province => {
+                    const option = document.createElement('option');
+                    option.value = province.province_id;
+                    option.textContent = province.province_name;
+                    provinceSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+
+        // Khi người dùng chọn tỉnh/thành phố, fetch và tạo tùy chọn cho quận/huyện
+        document.getElementById('province').addEventListener('change', function () {
+            const provinceId = this.value;
+            const districtSelect = document.getElementById('district');
+            districtSelect.innerHTML = '<option value="">Chọn quận, huyện</option>'; // Xóa tất cả các tùy chọn trước đó
+            if (provinceId) {
+                fetch(`https://vapi.vnappmob.com/api/province/district/${provinceId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.results.forEach(district => {
+                            const option = document.createElement('option');
+                            option.value = district.district_id;
+                            option.textContent = district.district_name;
+                            districtSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching districts:', error));
+            }
+        });
+
+        document.getElementById('district').addEventListener('change', function () {
+            const districtId = this.value;
+            const wardSelect = document.getElementById('ward');
+            wardSelect.innerHTML = '<option value="">Chọn phường, xã</option>'; // Xóa tất cả các tùy chọn trước đó
+            if (districtId) {
+                fetch(`https://vapi.vnappmob.com/api/province/ward/${districtId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.results.forEach(ward => {
+                            const option = document.createElement('option');
+                            option.value = ward.ward_id;
+                            option.textContent = ward.ward_name;
+                            wardSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching wards:', error));
+            }
+        });
+
+        jQuery('form').on('submit', function (event) {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của form
+
+            const fullname = jQuery('#fullname').val();
+            const phone = jQuery('#phone').val();
+            const province = jQuery('#province option:selected').text();
+            const district = jQuery('#district option:selected').text();
+            const ward = jQuery('#ward option:selected').text();
+            const road = jQuery('#road').val();
+            const address = `${road}, ${ward}, ${district}, ${province}`;
+            console.log(address);
+            jQuery.ajax({
+                url: '/checkout/shipping-info',
+                type: 'POST',
+                data: JSON.stringify({
+                    fullname,
+                    phone,
+                    address,
+                }),
+                contentType: 'application/json',
+                success: function (data) {
+                    if (data.success) {
+                        showToast({ type: 'success', message: 'Lưu thông tin giao hàng thành công!' });
+                    }
+                    window.location.reload();
+                },
+                error: function (error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+
+        let selectedPaymentMethod = null;
+
+        jQuery('.payment-method').on('click', function () {
+            selectedPaymentMethod = jQuery(this).data('payment-method');
+        });
+
+        jQuery('#btn-order').on('click', function () {
+            const selectedShippingInfo =jQuery('#shippingInfo option:selected').val().trim();
+            const selectedShippingInfoText =jQuery('#shippingInfo option:selected').text().trim();
+            const totalAmount = parseFloat(jQuery('#total-amount').text().replace(/\./g, ""));
+            console.log(totalAmount);
+            if (selectedShippingInfo === '') {
+                alert('Vui lòng chọn địa chỉ giao hàng');
+                return;
+            }
+            
+            let products = [];
+            jQuery('.order-details-form li:not(:first)').each(function () {
+                let productName = jQuery(this).find('span:nth-child(1)').text();
+                let quantity = jQuery(this).find('span:nth-child(2)').text();
+                let unitPrice = parseFloat(jQuery(this).find('span:nth-child(3)').text().replace(/\./g, ""));
+                let totalPrice = parseFloat(jQuery(this).find('span:nth-child(4)').text().replace(/\./g, ""));
+                let id = jQuery(this).find('span:nth-child(5)').text();
+                let capacity = jQuery(this).find('span:nth-child(6)').text();
+                let color = jQuery(this).find('span:nth-child(7)').text();
+                if (productName && quantity && unitPrice && totalPrice) {
+                    products.push({
+                        product_id: id,
+                        product_name: productName,
+                        quantity: quantity,
+                        unit_price: unitPrice,
+                        total_price: totalPrice,
+                        capacity: capacity,
+                        color: color
+                    });
+                }
+            });
+            switch (selectedPaymentMethod) {
+                case 'MoMo':
+                    jQuery.ajax({
+                        url: '/checkout/payment-momo',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            amount: parseFloat(jQuery('#total-amount').text().replace(/\./g, "")) / 100,
+                            deliveryInfo: selectedShippingInfo,
+                            receiverInfo: selectedShippingInfoText,
+                            products: products,
+                        }),
+                        success: function (data) {
+                            // Redirect to the payment URL
+                            window.location.href = data.payUrl;
+                        },
+                        error: function () {
+                            // Handle error
+                        }
+                    });
+                    break;
+                case 'VNPAY':
+                    jQuery.ajax({
+                        url: '/checkout/payment-vnpay',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            amount: parseFloat(jQuery('#total-amount').text().replace(/\./g, "")),
+                            bankCode: "VNBANK",
+                            language: "vn",
+                            deliveryInfo: selectedShippingInfo,
+                            receiverInfo: selectedShippingInfoText,
+                            products: products,
+                        }),
+                        success: function (data) {
+                            // Redirect to the payment URL
+                            window.location.href = data.vnpUrl;
+                        }, error: function () {
+                            // Handle error
+                        }
+                        // ...
+                    });
+                    break;
+                case 'Cash':
+                    if(totalAmount >= 20000000) {
+                        alert('Do số tiền COD quá lớn, vui lòng chọn phương thức thanh toán khác');
+                        return;
+                    } else {
+                        jQuery.ajax({
+                        url: '/checkout/cod',
+                        type: 'POST',
+                        contentType: 'application/json',
+                        data: JSON.stringify({
+                            amount: parseFloat(jQuery('#total-amount').text().replace(/\./g, "")),
+                            deliveryInfo: selectedShippingInfo,
+                            receiverInfo: selectedShippingInfoText,
+                            products: products,
+                        }),
+                        success: function (data) {
+                            if (data.success) {
+                                window.location.href = '/checkout/cod_return';
+                                console.log(data);
+                            }
+                        }, error: function () {
+                            // Handle error
+                        }
+                    });
+                    }
+                    break;
+                default:
+                    alert('Please select a payment method');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

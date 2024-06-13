@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+            .lock-btn {
+            background-color: rgb(255, 0, 0);
+            color: white;
+            }
+
+            .unlock-btn {
+            background-color: rgb(26, 222, 26);
+            color: white;
+            }
+    </style>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+                <div class="col">
+                    <h2 style="font-size: 35px;">Nhân viên</h2>
+                </div>
+                <div class="col-auto">
+                    <div class="d-flex">
+                    <button class="btn btn-primary btnAdd" style="width: auto;">
+                        <span class="fi-rr-plus"></span>
+                        <a class="item add-product" style="color: white;" href="/signup">Thêm nhân viên mới</a>
+                    </button>
+                    <button class="btn btn-success btn-sm btnAdd ml-2" style="width: auto;">
+                        <span class="fi-rr-refresh"></span>
+                        <a class="item send-receive" style="color: white;" href="/requireLink">Gửi lại Link</a>
+                    </button>
+                    </div>
+                </div>
+                </div>
+                <div class="table-responsive">
+                    <!-- Add a search form -->
+                    <form action="/staff" method="GET" class="mb-3" style="width:30%; float:right">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search" name="search"
+                                value="{{search}}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                    {{#if message }}
+                    <div class="alert alert-dismissible fade show alert-{{message.type}} fixed-bottom" role="alert"
+                    style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong style="margin-top: 10px;"> {{message.message}} </strong>
+                    </div>
+                    {{/if}}
+                    {{#if staffs}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên đăng nhập</th>
+                                <th>Họ và tên</th>
+                                <th>Role</th>
+                                <th>Chi tiết</th>
+                                {{!-- <th>Trạng thái</th>                                 --}}
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        {{#each staffs }}
+                        <tbody>
+                            <tr>
+                                <th class="align-middle">{{incrementedIndex @index}}</th>
+                                <th class="align-middle">{{this.name}}</th>
+                                <th class="align-middle">{{this.lastname}} {{this.firstname}}</th>
+                                <th class="align-middle">{{this.role}}</th>
+                                <th class="align-middle"><a href="/staff/edit/{{this._id}}">Chi tiết</a></th>
+                                {{!-- <th class="align-middle">{{this.state}}</th> --}}
+
+                                <td class="align-middle">
+                                    {{#if lock}}
+                                    <a href="/staff/unlock/{{this._id}}" style="text-decoration: none;" class="update btn btn-sm mx-1 unlock-btn">
+                                        <i class="fa-solid fa-unlock">Unlock</i>
+                                    </a>
+                                    {{else}}
+                                    <a href="/staff/lock/{{this._id}}" style="text-decoration: none;" class="update btn btn-sm mx-1 lock-btn">
+                                        <i class="fa-solid fa-lock">Lock</i>
+                                    </a>
+                                    {{/if}}
+                                    <a href="/staff/delete/{{this._id}}" style="text-decoration: none;"
+                                        class="delete btn btn-sm btn-danger mx-1">
+                                        <i class="fa fa-trash" aria-hidden="true">Xóa</i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                        {{/each}}
+                    </table>
+                    {{else}}
+                    <h1 class="text-center text-secondary mt-5">Không có nhân viên</h1>
+                    {{/if}}
+                    <!-- Add pagination links -->
+                    <div class="d-flex justify-content-center">
+                        <ul class="pagination">
+                            {{#if pagination.prevPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/staff?page={{pagination.prevPage}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    Previous
+                                </a>
+                            </li>
+                            {{/if}}
+
+                            {{#each pagination.pages}}
+                            <li class="page-item {{#if this.isCurrent}}active{{/if}}">
+                                <a class="page-link"
+                                    href="/staff?page={{this.page}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    {{this.page}}
+                                </a>
+                            </li>
+                            {{/each}}
+
+                            {{#if pagination.nextPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="/staff?page={{pagination.nextPage}}&pageSize={{pagination.pageSize}}&search={{search}}">
+                                    Next
+                                </a>
+                            </li>
+                            {{/if}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+
+
+    var messageExists = document.querySelector('.alert.alert-dismissible.fade.show') !== null;
+    if (messageExists) {
+        var messageElement = document.querySelector('.alert.alert-dismissible.fade.show');
+        setTimeout(function () {
+            messageElement.style.display = 'none';
+        }, 3000);
+    }
+
+
+</script>

@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<style>
+    .custom-select {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 4px;
+        background-color: #4492b1;
+        font-size: 16px;
+        appearance: none;
+        /* Remove default appearance */
+        -webkit-appearance: none;
+        /* Remove default appearance for Chrome and Safari */
+        -moz-appearance: none;
+        /* Remove default appearance for Firefox */
+        background: #4492b1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"><path d="M7 7l5 5 5-5z"/></svg>') no-repeat;
+        background-position: right 10px center;
+        /* Position the arrow on the right */
+        background-size: 20px;
+    }
+</style>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+                    <div class="col">
+                        <h2 style="font-size: 35px;">Đơn hàng</h2>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <button type="button" class="btn mr-3 btn-primary"> <a href="?orderType=web">Lọc đơn tại
+                            web</a></button>
+                    <button type="button" class="btn btn-warning"><a href="?orderType=pos">Lọc đơn tại cửa
+                            hàng</a></button>
+                    <!-- Add a search form -->
+                    {{#if (equal orderType "web") }}
+                    <form action="/order" method="GET" class="mb-3" style="width:30%; float:right">
+                        <input type="hidden" name="orderType" value="web">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm đơn hàng" name="search"
+                                value="{{search}}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                    {{else}}
+                    <form action="/order" method="GET" class="mb-3" style="width:30%; float:right">
+                        <input type="hidden" name="orderType" value="pos">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm đơn hàng" name="search"
+                                value="{{search}}">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
+                    </form>
+                    {{/if}}
+
+                    {{#if orderMessage }}
+                    <div class="alert alert-dismissible fade show alert-{{orderMessage.type}} fixed-bottom" role="alert"
+                        style="position: fixed;bottom: 10px;left: auto;z-index: 1000;width: 30%;margin-bottom: 40px;height: 60px;">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong style="margin-top: 10px;font-size:15px;"> {{orderMessage.message}} </strong>
+                    </div>
+                    {{/if}}
+
+                    {{#if (equal orderType "web")}}
+                    {{#if orders}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày giờ</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Tình trạng</th>
+                                <th>Tổng tiền</th>
+                                <th>Giảm giá</th>
+                                <th>Thông tin nhận hàng</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders }}
+                            <tr data-order-id="{{this._id}}">
+                                <th class="align-middle">{{incrementedIndex @index}}</th>
+                                <th class="align-middle">
+                                    <textarea disabled style="border: none; resize: none; overflow: hidden">
+                                        {{this._id}}
+                                    </textarea>
+                                </th>
+                                <th class="align-middle">{{this.customer_name}}</th>
+                                <th class="align-middle">{{this.created}}</th>
+                                <th class="align-middle">{{this.payment_method}}</th>
+                                <th class="align-middle" data-order-id="{{this._id}}">
+                                    <select name="order_status" class="custom-select" {{#ifor this.order_status 'completed' 'canceled' 'shipped'}}disabled{{/ifor}}>
+                                        <option value="processing" {{#ifeq this.order_status 'processing'}}selected{{/ifeq}}>Processing</option>
+                                        {{#ifeq this.order_status 'processing'}}
+                                            <option value="canceled">Canceled</option>
+                                        {{else}}
+                                            <option value="shipped" {{#ifeq this.order_status 'shipped'}}selected{{/ifeq}}>Shipped</option>
+                                            <option value="completed" {{#ifeq this.order_status 'completed'}}selected{{/ifeq}}>Completed</option>
+                                            <option value="canceled" {{#ifeq this.order_status 'canceled'}}selected{{/ifeq}}>Canceled</option>
+                                        {{/ifeq}}
+                                    </select>
+                                </th>
+                                <th class="align-middle">{{this.total_amount}}</th>
+                                <th class="align-middle">{{this.discount}}%</th>
+                                <th class="align-middle"><textarea disabled name="" id="" cols="30"
+                                        rows="5">{{this.receiver_info}}</textarea></th>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{/if}}
+                    {{else}} {{#if (equal orderType "pos")}}
+                    {{#if orders}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã đơn hàng</th>
+                                <th>Khách hàng</th>
+                                <th>Ngày giờ</th>
+                                <th>Phương thức thanh toán</th>
+                                <th>Tổng tiền</th>
+                                <th>Giảm giá</th>
+                                <th>In hóa đơn</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each orders }}
+                            <tr>
+                                <th class="align-middle">{{incrementedIndex @index}}</th>
+                                <th class="align-middle">{{this._id}}</th>
+                                <th class="align-middle">{{this.customer_name}}</th>
+                                <th class="align-middle">{{this.created}}</th>
+                                <th class="align-middle">{{this.payment_method}}</th>
+                                <th class="align-middle">{{this.total_amount}}</th>
+                                <th class="align-middle">{{this.discount}}%</th>
+                                <td class="align-middle">
+                                    <button class="btn  btn-primary-rgba" id="pos_order_invoice">
+                                        <a href="/order/download-invoice/{{this._id}}">
+                                            <i class="fa-solid fa-download mr-2"></i>Hóa đơn
+                                        </a>
+                                    </button>
+                                </td>
+                            </tr>
+                            {{/each}}
+                        </tbody>
+                    </table>
+                    {{/if}}
+                    {{else}}
+                    <h1>Chọn lọc theo web hay cửa hàng</h1>
+                    {{/if}}{{/if}}
+                    <!-- Add pagination links -->
+                    <div class="d-flex justify-content-center">
+                        <ul class="pagination">
+                            {{#if (equal orderType "web") }}
+                            {{#if pagination.prevPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page={{pagination.prevPage}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    Previous
+                                </a>
+                            </li>
+                            {{/if}}
+
+                            {{#each pagination.pages}}
+                            <li class="page-item {{#if this.isCurrent}}active{{/if}}">
+                                <a class="page-link"
+                                    href="?page={{this.page}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    {{this.page}}
+                                </a>
+                            </li>
+                            {{/each}}
+
+                            {{#if pagination.nextPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page={{pagination.nextPage}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    Next
+                                </a>
+                            </li>
+                            {{/if}}
+                            {{else}} {{#if (equal orderType "pos")}}
+                            {{#if pagination.prevPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page={{pagination.prevPage}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    Previous
+                                </a>
+                            </li>
+                            {{/if}}
+
+                            {{#each pagination.pages}}
+                            <li class="page-item {{#if this.isCurrent}}active{{/if}}">
+                                <a class="page-link"
+                                    href="?page={{this.page}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    {{this.page}}
+                                </a>
+                            </li>
+                            {{/each}}
+
+                            {{#if pagination.nextPage}}
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page={{pagination.nextPage}}&pageSize={{pagination.pageSize}}&search={{search}}&orderType=web">
+                                    Next
+                                </a>
+                            </li>
+                            {{/if}}
+                            {{else}}
+                            <p></p>
+                            {{/if}}{{/if}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(function () {
+
+
+        $("select[name='order_status']").change(function () {
+            const orderId = $(this).closest("th").attr("data-order-id");
+            console.log("Order ID:", orderId);
+            const newStatus = $(this).val();
+            console.log("New status:", newStatus);
+            $.ajax({
+                url: "/order/changeOrderStatus",
+                method: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify({ id: orderId, status: newStatus }),
+                success: function (response) {
+                    console.log("Order status changed successfully:", response);
+                    // Perform any additional actions upon success, if needed
+                },
+                error: function (err) {
+                    console.error("Error changing order status:", err);
+                    // Handle errors appropriately
+                },
+            });
+        });
+
+        //setInterval(() => {
+            document.querySelectorAll('tbody tr').forEach(tr => {
+                const orderId = tr.getAttribute('data-order-id');
+                fetch(`/order/updateOrderStatusWithGHN`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ id: orderId }),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Order status updated successfully:", data);
+                        // Thực hiện bất kỳ hành động bổ sung nào khi thành công, nếu cần thiết
+                    })
+                    .catch(error => {
+                        console.error("Error updating order status with GHN:", error);
+                    });
+            });
+       // }, 15000);
+
+    });
+
+
+    var messageExists = document.querySelector('.alert.alert-dismissible.fade.show') !== null;
+    if (messageExists) {
+        var messageElement = document.querySelector('.alert.alert-dismissible.fade.show');
+        setTimeout(function () {
+            messageElement.style.display = 'none';
+        }, 5000);
+    }
+
+
+
+
+</script>

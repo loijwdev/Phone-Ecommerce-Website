@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>
+        $(document).ready(function () {
+            $('.detail-toggle').click(function () {
+                const targetId = $(this).data('target');
+                $(targetId).collapse('toggle');
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-2 p-0">
+                <!-- Sidebar content here -->
+                {{>sidebar}}
+            </div>
+            <div class="col-10 ">
+                <div id="right" class="right">
+                    {{>info}}
+                </div>
+                <div class="row justify-content-between mt-3">
+
+                    <div class="col">
+                        <h2 style="font-size: 35px;"> <a href="./" style="text-decoration: none; color: inherit;">Đơn
+                                hàng của {{_name}}</a>
+                    </div>
+                </div>
+                <br>
+                <div class="table-responsive">
+                    {{#if message }}
+                    <div class="alert alert-dismissible fade show alert-{{message.type}}" role="alert">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <strong style="margin-top: 10px;"> {{message.message}} </strong>
+                    </div>
+                    {{/if}}
+                    {{#if order}}
+                    <table class="w-100 mt-3 table table-striped my-3 mt-3" id="tableProduct1">
+                        <thead>
+                            <tr>
+                                <th>Mã đơn</th>
+                                <th>Tổng tiền</th>
+                                <th>Ngày mua</th>
+                                <th>Đơn hàng ở</th>
+                                <th>Chi tiết</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{#each order}}
+                            <tr>
+                                <th class="align-middle"> {{this._id}}</th>
+                                <th class="align-middle"> {{this.total_amount}} </th>
+                                <th class="align-middle"> {{this.created}} </th>
+                                <th class="align-middle"> {{this.order_type}} </th>
+                                <td>
+                                    <a class="btn btn-info detail-toggle" data-bs-toggle="collapse"
+                                        data-target="#collapse{{this._id}}" role="button" aria-expanded="false"
+                                        aria-controls="collapse">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            <td colspan="7">
+                                <div class="collapse" id="collapse{{this._id}}">
+                                    <table style="width: 100%;">
+                                        <thead>
+                                            <tr style="background-color: rgb(106, 233, 112)">
+                                                <th>Id</th>
+                                                <th>Tên sản phẩm</th>
+                                                <th>Số lượng</th>
+                                                <th>Giá bán 1 sản phẩm</th>
+                                                <th>Tổng tiền</th>
+                                            </tr>
+                                            {{#each this.products}}
+                                            <tr>
+                                                <td> {{this.product_id}} </td>
+                                                <td> {{this.product_name}} </td>
+                                                <td> {{this.quantity}} </td>
+                                                <td> {{this.unit_price}} </td>
+                                                <td> {{this.total_price}} </td>
+                                            </tr>
+                                            {{/each}}
+
+                                        </thead>
+                                    </table>
+                                </div>
+                            </td>
+                            {{/each}}
+                        </tbody>
+                        
+                    </table>
+                    {{else}}
+                    <h1 class="text-center text-secondary mt-5">Không tìm thấy</h1>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

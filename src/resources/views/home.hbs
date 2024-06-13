@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <style>
+        a {
+            text-decoration: none;
+        }
+
+        .highcharts-credits {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="contain">
+        {{>sidebar}}
+        <main id="main">
+            <h1 class="heading">Trang chủ</h1>
+            <!-- <div class="date">
+                <input type="date" name="" id="">
+            </div> -->
+
+            <div class="insights">
+                <div class="sales" style="--dash: 320px;--clr: #129ff1;--num: 95;">
+                    <div class="texto">
+                        <span class="fi-rr-chart-line-up"></span>
+                        <h2>Doanh thu</h2>
+                    </div>
+                    <div class="middle">
+                        <div class="left">
+                            <h1>Tổng:</h1>
+                            <h1>{{totalRevenue}}</h1>
+                        </div>
+                    </div>
+                    <small class="text-muted">Last 24 Hours</small>
+
+                </div>
+
+                <div class="income" style="--dash: 320px;--clr: #fc3e04;--num: 84;">
+                    <div class="texto">
+                        <span class=" fi-rr-shopping-cart"></span>
+                        <h2>Sản phẩm đã bán </h2>
+                    </div>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Số lượng: </h3>
+                        </div>
+                        <div class="left" style="color: red;font-weight: bold;">
+                            <h3>{{totalProductsSold}}</h3>
+                        </div>
+                    </div>
+                    <!--  <a href="#" class="btn-primary">Open Cash Register</a>  -->
+                    <small class="text-muted " style="margin-top: 50dp;">Last 24 Hours</small>
+
+                </div>
+
+                <div class="income" style="--dash: 320px;--clr: #fc3e04;--num: 84;">
+                    <div class="texto">
+                        <span class=" fi-rr-shopping-cart"></span>
+                        <h2>Số đơn hàng </h2>
+                    </div>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Số lượng: </h3>
+                        </div>
+                        <div class="left" style="color: red;font-weight: bold;">
+                            <h3>{{totalOrders}}</h3>
+                        </div>
+                    </div>
+                    <!--  <a href="#" class="btn-primary">Open Cash Register</a>  -->
+                    <small class="text-muted " style="margin-top: 50dp;">Last 24 Hours</small>
+
+                </div>
+            </div>
+
+            {{!-- <div class="recent-orders">
+                <div id="columnchart_values"></div>
+            </div> --}}
+            <figure class="highcharts-figure" style="margin-top: 15px;">
+                <div id="container"></div>
+                <p class="highcharts-description" style="text-align: center;">
+                    Thống kê doanh thu 6 tháng gần nhất
+                </p>
+            </figure>
+            <a href="#right" class="move btn-move-main active">
+                <span class=" fi-rr-arrow-small-right"></span>
+            </a>
+        </main>
+
+        <div id="right" class="right">
+            {{>info}}
+            <div class="recent-updates">
+                <div class="updates">
+                    <figure class="highcharts-figure" style="margin-top: 20px;">
+                        <div id="container2"></div>
+                        <p class="highcharts-description" style="text-align: center;">
+                            Thống kê các sản phẩm bán chạy
+                        </p>
+                    </figure>
+
+                </div>
+            </div>
+        </div>
+            <a href="#main" class="move btn-move-right " >
+            <span class=" fi-rr-arrow-small-left"></span>
+        </a>    
+    </div>
+
+
+    </div>
+
+
+
+
+</body>
+
+</html>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+<script src="/js/home.js"></script>

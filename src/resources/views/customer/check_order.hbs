@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <!-- Favicon  -->
+    <link rel="icon" href="/img/core-img/favicon.ico">
+
+    <!-- Core Style CSS -->
+    <link rel="stylesheet" href="/css/core-style.css">
+    {{!--
+    <link rel="stylesheet" href="/style.css"> --}}
+
+    <style>
+        /* Default icon */
+        .fa.fa-circle-o:before {
+
+            content: "\f111";
+            /* Unicode for circle-o icon */
+        }
+
+        /* Icon when the accordion item is expanded */
+        .collapsed .fa.fa-circle-o:before {
+            content: "\f10c";
+            /* Unicode for check-circle-o icon */
+        }
+
+        .nice-select {
+            display: none;
+        }
+
+        select {
+            display: block;
+            width: 100%;
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #495057;
+            background-color: #fff;
+            background-clip: padding-box;
+            border: 1px solid #ced4da;
+            border-radius: .25rem;
+            transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ##### Header Area Start ##### -->
+    <header class="header_area">
+        <div class="classy-nav-container breakpoint-off d-flex align-items-center justify-content-between">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar" id="essenceNav">
+                <!-- Logo -->
+                <a class="nav-brand" href="/index"><img src="/img/TĐT_logo.png" alt=""></a>
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- close btn -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul>
+                            <li><a href="/index">Trang chủ</a></li>
+                            <li><a href="/shop">Shop</a>
+                            </li>
+
+                            <li><a href="#">Pages</a>
+                                <ul class="dropdown">
+                                    <li><a href="/shop">Shop</a></li>
+                                    <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="/check-order">Kiểm tra đơn hàng</a></li>
+                        </ul>
+                    </div>
+                    <!-- Nav End -->
+                </div>
+            </nav>
+
+            <!-- Header Meta Data -->
+            <div class="header-meta d-flex clearfix justify-content-end">
+                <!-- User Login Info -->
+                <div class="user-login-info" style="display: flex; justify-content: center; align-items: center;">
+                    {{#if name}}
+                    <span style="margin-right:10px ;">Chào, <b>{{name}}</b></span>
+                    {{else}}
+                    <a href="/cus/auth" style="display: flex; justify-content: center; align-items: center;"><img
+                            src="img/core-img/user.svg" alt=""></a>
+                    {{/if}}
+                </div>
+
+                <div class="user-login-info">
+                    {{#if name}}
+                    <a href="/cus/logout" style="display: flex; justify-content: center; align-items: center;"><img
+                            src="img/logout.png" alt="" style="margin: 35px;"></a>
+                    {{/if}}
+                </div>
+            </div>
+
+        </div>
+    </header>
+    <!-- ##### Header Area End ##### -->
+
+    <!-- ##### Breadcumb Area Start ##### -->
+    <div class="breadcumb_area bg-img" style="background-image: url(img/bg-img/breadcumb.jpg);">
+        <div class="container h-100">
+            <div class="row h-100 align-items-center">
+                <div class="col-12">
+                    <div class="page-title text-center">
+                        <h2>Kiểm tra đơn hàng</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ##### Breadcumb Area End ##### -->
+
+    <!-- ##### Checkout Area Start ##### -->
+    <div class="checkout_area section-padding-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-5">
+                    <div class="checkout_details_area clearfix">
+                        <div class="cart-page-heading mb-30">
+                            <h5>Billing Address</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mb-3">
+                                <label for="orderId">Mã đơn hàng</label>
+                                <input type="text" class="form-control" id="orderId" name="orderId" value=""
+                                    placeholder="Nhập mã đơn hàng">
+                            </div>
+                            <button type="btn" class="btn essence-btn" id="btn-find-order">Tìm kiếm thông tin đơn
+                                hàng</button>
+                        </div>
+
+                        {{#if order}}
+                        <div style="margin-top:20px">
+                            <h5>Chọn mã đơn hàng</h5>
+                            <select class="form-select" id="order_id" name="order_id">
+                                <option value="">Chọn mã đơn hàng</option>
+                                {{#each order}}
+                                <option value="{{this._id}}">{{this._id}} || {{formatDate this.created}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                        {{else}}
+                        <select name="" id="order_id" style="margin-top:10px"></select>
+                        {{/if}}
+
+                    </div>
+                </div>
+
+
+                <div class="col-7 mx-auto mb-2">
+                    <div class="order-details-confirmation">
+
+                        <div class="cart-page-heading">
+                            <h3 class="justify-content-center">ĐƠN HÀNG CỦA QUÝ KHÁCH
+                                {{#if name}}
+                                <span style="margin-left: 50px;"><button style="display: none;" type="button"
+                                        class="btn btn-danger" id="cancelOrder">HỦY</button>
+                                </span>
+                                {{/if}}
+                            </h3>
+                            <p>The Details</p>
+                        </div>
+                        <ul class="order-details-form mb-4" id="detail1" style="display: none;">
+                            <li>Mã đơn hàng: </li>
+                            <li><span>Product</span> <span>Qty</span><span>Price</span> <span>Total</span></li>
+                            <li><span></span> <span></span> <span></span><span></span>
+                            </li>
+                            <li style="justify-content: center; font-size:large">Total: <span id="total-amount">
+                                </span> </li>
+                            <li id="info">Thông tin người nhận: </li>
+                            <li id="status">
+                                <h4></h4>
+                            </li>
+                            <ul id="statusList">
+                                <p>Chi tiết</p>
+                            </ul>
+                            <li id="payment_method">Phương thức thanh toán: </li>
+                            <li id="date">Ngày và giờ đặt hàng: </li>
+                            <li id="expected_date"></li>
+                        </ul>
+
+                        <ul class="order-details-form mb-4" id="detail2" style="display: none;">
+                            <li>
+                                <h2>Không tìm thấy đơn hàng</h2>
+                            </li>
+                        </ul>
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <!-- ##### Checkout Area End ##### -->
+    <script id="kami-chat-widget" src="https://kamimind.ai/kami-chat-widget.js" token="rZq7YeQ4YK40O5WUcJlOH2D32kBuehpC"
+        charset="utf-8" botToken="336290a4-88b3-43e8-ac45-82ace2518135" defer></script>
+    <!-- ##### Footer Area Start ##### -->
+    <footer class="footer_area clearfix">
+        <div class="container">
+            <div class="row">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area d-flex mb-30">
+                        <!-- Logo -->
+                        <div class="footer-logo mr-50">
+                            <a href="#"><img src="/img/TĐT_logo.png" alt=""></a>
+                        </div>
+                        <!-- Footer Menu -->
+                        <div class="footer_menu">
+                            <ul>
+                                <li><a href="shop.html">Shop</a></li>
+                                <li><a href="blog.html">Blog</a></li>
+                                <li><a href="contact.html">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area mb-30">
+                        <ul class="footer_widget_menu">
+                            <li><a href="#">Order Status</a></li>
+                            <li><a href="#">Payment Options</a></li>
+                            <li><a href="#">Shipping and Delivery</a></li>
+                            <li><a href="#">Guides</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Use</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-end">
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_heading mb-30">
+                            <h6>Subscribe</h6>
+                        </div>
+                        <div class="subscribtion_form">
+                            <form action="#" method="post">
+                                <input type="email" name="mail" class="mail" placeholder="Your email here">
+                                <button type="submit" class="submit"><i class="fa fa-long-arrow-right"
+                                        aria-hidden="true"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- Single Widget Area -->
+                <div class="col-12 col-md-6">
+                    <div class="single_widget_area">
+                        <div class="footer_social_area">
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook"><i
+                                    class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Instagram"><i
+                                    class="fa fa-instagram" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter"><i
+                                    class="fa fa-twitter" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Pinterest"><i
+                                    class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <a href="#" data-toggle="tooltip" data-placement="top" title="Youtube"><i
+                                    class="fa fa-youtube-play" aria-hidden="true"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-5">
+                <div class="col-md-12 text-center">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;
+                        <script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i
+                            class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com"
+                            target="_blank">Colorlib</a>, distributed by <a href="https://themewagon.com/"
+                            target="_blank">ThemeWagon</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </footer>
+    <!-- ##### Footer Area End ##### -->
+
+    <!-- jQuery (Necessary for All JavaScript Plugins) -->
+    <script src="/js2/jquery/jquery-2.2.4.min.js"></script>
+    <!-- Popper js -->
+    <script src="/js2/popper.min.js"></script>
+    <!-- Bootstrap js -->
+    <script src="/js2/bootstrap.min.js"></script>
+    <!-- Plugins js -->
+    <script src="/js2/plugins.js"></script>
+    <!-- Classy Nav js -->
+    <script src="/js2/classy-nav.min.js"></script>
+    <!-- Active js -->
+    <script src="/js2/active.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <!-- jQuery Easing -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+    <script>
+        document.querySelector('select').style.display = 'block';
+
+        document.getElementById('order_id').addEventListener('change', function () {
+            
+            var orderId = this.value;
+            jQuery.ajax({
+                url: '/check-order/getOrder',
+                type: 'POST',
+                data: { orderId: orderId },
+                success: function (response) {
+                    // Xử lý response ở đây
+                    console.log(response);
+                    if (response.message === 'Order not found' || response.message === 'Invalid order ID') {
+                        jQuery('#detail1').hide();
+                        jQuery('#detail2').show();
+                    } else {
+                        jQuery('#detail1').show();
+                        jQuery('#detail2').hide();
+                        jQuery('#detail1 li:eq(0)').text('Mã đơn hàng: ' + response._id);
+                        jQuery('#detail1 li:eq(1)').remove();
+                        var productInfo = '';
+
+                        for (var i = 0; i < response.products.length; i++) {
+                            var product = response.products[i]; productInfo += '<li><span style="width:50%">' +
+                                product.product_name + '</span> <span>' + product.quantity + '</span> <span>' +
+                                formatCurrency(product.unit_price) + '</span><span>' + formatCurrency(product.quantity * product.unit_price)
+                                + '</span></li>';
+                        }
+
+                        jQuery('#detail1 li:eq(1)').after(productInfo);
+                        productInfo = "";
+                        jQuery('#detail1 li:eq(1)').remove();
+                        jQuery('#total-amount').text(formatCurrency(response.total_amount)); jQuery('#info').text('Thông tin người nhận: ' + response.receiver_info);
+                        jQuery(' #status h4').text('Trạng thái: ' + response.order_status);
+                        jQuery('#statusList').empty();
+                        fetch('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Token': '7b6f17c8-eea8-11ee-8bfa-8a2dda8ec551'
+                            },
+                            body: JSON.stringify({
+                                'order_code': response.order_code_GHN
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                const logs = data.data.log;
+                                const statusList = document.getElementById('statusList');
+                                logs.forEach(log => {
+                                    const listItem = document.createElement('li');
+                                    listItem.innerHTML = `Status: ${log.status}, Updated Date: ${new Date(log.updated_date).toLocaleString()}`;
+                                    statusList.appendChild(listItem);
+                                });
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                        jQuery(' #payment_method').text('Phương thức thanh toán: ' + response.payment_method);
+                        jQuery(' #date').text('Ngày và giờ đặt hàng: ' + formatDate(response.created));
+                        if (response.order_status === 'processing') {
+                            jQuery('#cancelOrder').css('display', 'block');
+                        } else {
+                            jQuery('#cancelOrder').css('display', 'none');
+                        }
+                        if (response.payment_method === 'Tiền mặt') {
+                            jQuery('#expected_date').css('display', 'none');
+                        } else {
+                            jQuery('#expected_date').css('display', 'block');
+                        }
+                        fetch('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Token': '7b6f17c8-eea8-11ee-8bfa-8a2dda8ec551'
+                            },
+                            body: JSON.stringify({
+                                'order_code': response.order_code_GHN
+                            })
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                let formatedDate = formatDate(data.data.leadtime).split(' ');
+                                jQuery('#expected_date').text('Ngày giao hàng dự kiến: ' + formatedDate[1])
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                    }
+                }
+            });
+        });
+
+        jQuery(document).ready(function () {
+            jQuery('#btn-find-order').click(function () {
+                var orderId = jQuery('#orderId').val();
+                console.log(orderId);
+                jQuery.ajax({
+                    url: '/check-order/getOrder',
+                    type: 'POST',
+                    data: { orderId: orderId },
+                    success: function (response) {
+                        // Xử lý response ở đây
+                        console.log(response);
+                        if (response.message === 'Order not found' || response.message === 'Invalid order ID') {
+                            jQuery('#detail1').hide();
+                            jQuery('#detail2').show();
+                        } else {
+                            jQuery('#detail1').show();
+                            jQuery('#detail2').hide();
+                            jQuery('#detail1 li:eq(0)').text('Mã đơn hàng: ' + response._id);
+
+                            jQuery('#detail1 li:eq(1)').remove();
+                            var productInfo = '';
+                            for (var i = 0; i < response.products.length; i++) {
+                                var product = response.products[i]; productInfo += '<li><span style="width:50%">' +
+                                    product.product_name + '</span> <span>' + product.quantity + '</span> <span>' +
+                                    formatCurrency(product.unit_price) + '</span><span>' + formatCurrency(product.quantity * product.unit_price)
+                                    + '</span></li>';
+                            }
+
+                            jQuery('#detail1 li:eq(1)').after(productInfo);
+                            productInfo = "";
+                            // Remove the second list item in #detail1
+                            jQuery('#detail1 li:eq(1)').remove();
+                            jQuery('#total-amount').text(formatCurrency(response.total_amount)); jQuery('#info').text('Thông tin người nhận: ' + response.receiver_info);
+                            jQuery(' #status h4').text('Trạng thái: ' + response.order_status);
+                            jQuery('#statusList').empty();
+                            fetch('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Token': '7b6f17c8-eea8-11ee-8bfa-8a2dda8ec551'
+                                },
+                                body: JSON.stringify({
+                                    'order_code': response.order_code_GHN
+                                })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    const logs = data.data.log;
+                                    const statusList = document.getElementById('statusList');
+                                    logs.forEach(log => {
+                                        const listItem = document.createElement('li');
+                                        listItem.innerHTML = `Status: ${log.status}, Updated Date: ${new Date(log.updated_date).toLocaleString()}`;
+                                        statusList.appendChild(listItem);
+                                    });
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                            jQuery(' #payment_method').text('Phương thức thanh toán: ' + response.payment_method);
+                            jQuery(' #date').text('Ngày và giờ đặt hàng: ' + formatDate(response.created));
+
+                            if (response.order_status === 'processing') {
+                                jQuery('#cancelOrder').css('display', 'block');
+                            } else {
+                                jQuery('#cancelOrder').css('display', 'none');
+                            }
+                            if (response.payment_method === 'Tiền mặt') {
+                                jQuery('#expected_date').css('display', 'none');
+                            } else {
+                                jQuery('#expected_date').css('display', 'block');
+                            }
+
+                            fetch('https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/detail', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'Token': '7b6f17c8-eea8-11ee-8bfa-8a2dda8ec551'
+                                },
+                                body: JSON.stringify({
+                                    'order_code': response.order_code_GHN
+                                })
+                            })
+                                .then(response => response.json())
+                                .then(data => {
+                                    let formatedDate = formatDate(data.data.leadtime).split(' ');
+                                    jQuery('#expected_date').text('Ngày giao hàng dự kiến: ' + formatedDate[1])
+                                })
+                                .catch((error) => {
+                                    console.error('Error:', error);
+                                });
+                        }
+                    },
+                    error: function (error) {
+                        // Xử lý lỗi ở đây
+                        console.log(error);
+                    }
+                });
+            });
+
+            jQuery('#cancelOrder').click(function () {
+                var orderId = jQuery('#order_id').val();
+                console.log(orderId);
+                jQuery.ajax({
+                    url: '/check-order/cancelOrder',
+                    type: 'POST',
+                    data: { orderId: orderId },
+                    success: function (response) {
+                        // Xử lý response ở đây
+                        console.log(response);
+                        alert('Đã hủy đơn hàng');
+                        window.location.reload();
+                    },
+                    error: function (error) {
+                        // Xử lý lỗi ở đây
+                        console.log(error);
+                    }
+                });
+            });
+        });
+
+
+
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+        }
+        function formatDate(date) { return new Date(date).toLocaleString('vi-VN'); }
+
+    </script>
+</body>
+
+</html>

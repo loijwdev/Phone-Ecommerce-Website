@@ -1,0 +1,60 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2 p-0">
+      <!-- Sidebar content here -->
+      {{>sidebar}}
+    </div>
+    <div class="col-10">
+      <div id="right" class="right">
+      </div>
+      <div class="col-6 mx-auto " style="margin-top: 30px ;width: 50%;">
+        <h1 class="">Thông tin nhân viên {{staff.lastname}} {{staff.firstname}}</h1>
+        <form action="/staff/update/{{staff._id}}" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+            <div class="form-group">
+              <label for="avt">Avatar</label>
+              <div class="avatar-wrapper" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 10px;">
+                <input class="form-control" type="file" id="avt" name="avt">
+                <div class="avatar-preview" style="margin-top: 10px;">
+                  <img src="/uploads/{{staff.avt}}" alt="" class="img-thumbnail rounded-circle" style="width: 150px; height: 150px;">
+                </div>
+              </div>
+            </div>
+            <input type="hidden" name="old_avt" id="" value="{{staff.avt}}">    
+            <div class="form-group">
+              <label for="name">Tên đăng nhập</label>
+              <input class="form-control" placeholder="Tên đăng nhập" id="name" name="name" value="{{staff.name}}" readonly>
+            </div>
+            <div class="form-group">
+              <label for="Email">Email</label>
+              <input class="form-control" placeholder="Nhập Tên nhân viên" id="Email" name="Email" value="{{staff.email}}" readonly>
+            </div>     
+            
+          <div class="form-group">
+            <label for="lastname">Họ</label>
+            <input class="form-control" placeholder="Nhập Tên nhân viên" id="lastname" name="lastname"
+              value="{{staff.lastname}}">
+          </div>
+          <div class="form-group">
+            <label for="firstname">Tên</label>
+            <input class="form-control" placeholder="Nhập Họ nhân viên" id="firstname" name="firstname"
+              value="{{staff.firstname}}">
+          </div>
+          <div class="form-group">
+            <label for="phone">Số điện thoại</label>
+            <input class="form-control" placeholder="Nhập số điện thoại" id="phone" name="phone"
+              value="{{staff.phone}}">
+          </div>
+          <div class="form-group">
+            <label for="birthday">Ngày Sinh</label>
+            <input class="form-control" placeholder="Nhập ngày sinh" id="birthday" name="birthday"
+              value="{{staff.birthday}}">
+          </div>
+          <div class="form-group">
+          </div>          
+          <button type="submit" name="submit" class="btn btn-success" style="margin-top: 15px;">Sửa</button>
+          <a href="/staff/defaultpassword/{{staff._id}}" class="btn btn-success" style="margin-top: 15px;">Khôi phục mật khẩu</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
